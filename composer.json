@@ -1,0 +1,23 @@
+{
+    "name": "asbamboo/event",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "李春寅",
+            "email": "licy2013@aliyun.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+        	"asbamboo\\event\\": ""
+		}
+    },
+    "require": {
+        "php": "^7.2",
+        "asbamboo/autoload": "^1.0",
+        "asbamboo/helper": "^1.0"
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
+}
