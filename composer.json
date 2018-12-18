@@ -8,6 +8,11 @@
             "email": "licy2013@aliyun.com"
         }
     ],
+    "autoload" : {
+        "psr-4" : {
+            "asbamboo\\event\\" : ""
+        }
+    },
     "require": {
         "php": "^7.2",
         "asbamboo/autoload": "^1.0",
