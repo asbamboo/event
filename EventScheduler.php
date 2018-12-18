@@ -14,20 +14,6 @@ class EventScheduler implements EventSchedulerInterface
     use SingletonClassTrait;
 
     /**
-     * 创建并获取类的实例
-     * 为了更好的支持ide，这里重写了SingletonClassTrait中的instance方法，区别在于声明的返回值类型
-     * 
-     * @return EventSchedulerInterface
-     */
-    public static function instance() : EventSchedulerInterface
-    {
-        if(! static::$instance){
-            static::$instance    = new static();
-        }
-        return static::$instance;
-    }
-    
-    /**
      * PROPAGATION_STOPED 当一个listener执行后，返回 PROPAGATION_STOPED 会阻止该事件传递给其他监听器listener。
      * @var bool
      */
@@ -40,6 +26,20 @@ class EventScheduler implements EventSchedulerInterface
     protected $listeners        = [];
 
     private $listeners_sorted   = [];
+
+    /**
+     * 创建并获取类的实例
+     * 为了更好的支持ide，这里重写了SingletonClassTrait中的instance方法，区别在于声明的返回值类型
+     *
+     * @return EventSchedulerInterface
+     */
+    public static function instance() : EventSchedulerInterface
+    {
+        if(! static::$instance){
+            static::$instance    = new static();
+        }
+        return static::$instance;
+    }
 
     /**
      * {@inheritDoc}
@@ -72,7 +72,7 @@ class EventScheduler implements EventSchedulerInterface
             'call'                  => $call,
             'priority'              => $priority,
         ];
-        
+
         return true;
     }
 
@@ -82,12 +82,12 @@ class EventScheduler implements EventSchedulerInterface
      */
     public function trigger(string $name, $args) : bool
     {
-        if(EventListener::instance()->has($name)){
-            EventListener::instance()->bind($name);
+        if(!$this->has($name)){
+            return false;
         }
 
-        if(!isset($this->listeners[$name])){
-            return false;
+        if(EventListener::instance()->has($name)){
+            EventListener::instance()->bind($name);
         }
 
         $this->listenerSort($name);
@@ -96,8 +96,18 @@ class EventScheduler implements EventSchedulerInterface
                 break;
             }
         }
-        
+
         return true;
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     * @see \asbamboo\event\EventSchedulerInterface::has()
+     */
+    public function has(string $name) : bool
+    {
+        return EventListener::instance()->has($name) || isset($this->listeners[$name]);
     }
 
     /**

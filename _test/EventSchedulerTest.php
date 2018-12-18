@@ -25,4 +25,10 @@ class EventSchedulerTest extends TestCase
 
         $this->assertEquals($this->test_value, 2);
     }
+
+    public function testHas()
+    {
+        $this->assertTrue(EventScheduler::instance()->has('test_event_name'));
+        $this->assertFalse(EventScheduler::instance()->has('test_false_name'));
+    }
 }
